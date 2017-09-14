@@ -141,7 +141,7 @@ def get_driver(use_ftdi=False, port=SERIAL_PORT, baud=SERIAL_BAUD, file=False, r
         if each[1].startswith("Gadget Serial"):
           print "opening a file driver"
           return CdcDriver(open(port, 'w+b', 0 ))
-    return PySerialDriver(port, baud, rtscts=rtscts)
+    return PySerialDriver(port, baud)
   # if finding the driver fails we should exit with a return code
   # currently sbp's py serial driver raises SystemExit, so we trap it
   # here
@@ -319,7 +319,7 @@ def main(args):
     except:
       raise Exception('Invalid host and/or port')
   else:
-    driver = get_driver(args.ftdi, port, baud, args.file, rtscts=args.rtscts)
+    driver = get_driver(args.ftdi, port, baud, args.file, args.rtscts)
     # Handler with context
   with Handler(Framer(driver.read, driver.write, args.verbose)) as link:
     # Logger with context
